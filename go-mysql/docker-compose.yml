@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      target: build-env
+    volumes:
+      - ./:/go/src/sample
+    ports:
+      - 80:80
+    command: /go/bin/sample
+    links:
+      - db
+  db:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: smash-core-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    container_name: db-sample
+    restart: always
+
+volumes:
+  mysql_data:
